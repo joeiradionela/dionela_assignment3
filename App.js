@@ -1,20 +1,42 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { PaperProvider } from 'react-native-paper';
+import { ScrollView, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import Login from './src/pages/Login';
+import Registration from './src/pages/Registration';
+import PasswordRecovery from './src/pages/PasswordRecovery'; // Import PasswordRecovery component
 
 export default function App() {
+  const [currentPage, setCurrentPage] = useState('login'); // State to track the current page
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'login':
+        return <Login setCurrentPage={setCurrentPage} />;
+      case 'registration':
+        return <Registration setCurrentPage={setCurrentPage} />;
+      case 'passwordRecovery':
+        return <PasswordRecovery setCurrentPage={setCurrentPage} />;
+      default:
+        return <Login setCurrentPage={setCurrentPage} />;
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <PaperProvider>
+      <SafeAreaProvider>
+        <SafeAreaView style={{ flex: 1 }}>
+          <ScrollView contentContainerStyle={Appstyles.scrollContainer}>
+            {renderPage()}
+          </ScrollView>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </PaperProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const Appstyles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
   },
 });
